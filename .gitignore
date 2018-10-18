@@ -1,5 +1,6 @@
 *.swp
 *.o
+*.output
 location.hh
 position.hh
 stack.hh
@@ -13,4 +14,3 @@ P3
 grammar.hh
 lilc_lexer.yy.cc
 lilc_parser.cc
-lilc_parser.output
