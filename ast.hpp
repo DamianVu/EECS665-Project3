@@ -130,6 +130,7 @@ private:
 class DeclListNode : public ASTNode{
 public:
 	DeclListNode(std::list<DeclNode *> * decls) : ASTNode(){
+		myDecls = *decls;
 	}
 	void unparse(std::ostream& out, int indent);
 private:
