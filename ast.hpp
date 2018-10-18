@@ -168,6 +168,7 @@ public:
 class IdNode : public TypeNode{
 public:
 	IdNode(IDToken * token) : TypeNode(){
+		myStrVal = token->value();
 	}
 	void unparse(std::ostream& out, int indent);
 private:
