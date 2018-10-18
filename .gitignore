@@ -9,3 +9,8 @@ mc_parser.tab.cc
 mc_parser.tab.hh
 my_wc
 build*/
+P3
+grammar.hh
+lilc_lexer.yy.cc
+lilc_parser.cc
+lilc_parser.output
