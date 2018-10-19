@@ -148,7 +148,7 @@ varDecl : type id SEMICOLON {
 }
 
 structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
-	
+
 }
 
 structBody : structBody varDecl {
@@ -159,70 +159,127 @@ structBody : structBody varDecl {
 			 }
 
 fnDecl : type id formals fnBody {
-	
+
 }
 
 formals : LPAREN RPAREN {
-	
-		} 
+
+		}
 	| LPAREN formalsList RPAREN {
 
 		}
 
 formalsList : formalDecl {
-	
+
 		}
 	| formalDecl COMMA formalsList {
 
 		}
 
 formalDecl : type id {
-	
+
 }
 
 fnBody : LCURLY varDeclList stmtList RCURLY {
-	
+
 }
 
 varDeclList : varDeclList varDecl {
-	
+
 			}
 		| /* epsilon */ {
 
 		}
 
 stmtList : stmtList stmt {
-	
+
 		}
 	| /* epsilon */ {
 
 		}
 
-stmt : assignExp SEMICOLON {
-	
-	}
+    stmt : assignExp { SEMICOLON
+           }
+         | loc PLUSPLUS SEMICOLON {
+           }
+         | loc MINUSMINUS SEMICOLON {
+           }
+         | INPUT READ loc SEMICOLON {
+           }
+         | OUTPUT WRITE exp SEMICOLON {
+           }
+         | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
+           }
+         | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY ELSE LCURLY varDeclList stmtList RCURLY {
+           }
+         | WHILE LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
+           }
+         | RETURN exp SEMICOLON {
+           }
+         | RETURN SEMICOLON {
+           }
+         | fncall SEMICOLON {
+           }
 
 assignExp : loc ASSIGN exp {
-	
+
 }
 
 loc : id {
-	
+
 	}
 | loc DOT id {
-	
+
 	}
 
 exp : assignExp {
-	
-	}
-| term {
-	
-	}
+       }
+     | exp PLUS exp {
+       }
+     | exp MINUS exp {
+       }
+     | exp TIMES exp {
+       }
+     | exp DIVIDE exp {
+       }
+     | NOT exp {
+       }
+     | exp AND exp {
+       }
+     | exp OR exp {
+       }
+     | exp EQUALS exp {
+       }
+     | exp NOTEQUALS exp {
+       }
+     | exp LESS exp {
+       }
+     | exp GREATER exp {
+       }
+     | exp LESSEQ exp {
+       }
+     | exp GREATEREQ exp {
+       }
+     | MINUS term {
+       }
+     | term {
+    }
 
 term : loc {
-	
-}
+       }
+     | INTLITERAL {
+       }
+     | STRINGLITERAL {
+       }
+     | TRUE {
+       }
+     | FALSE {
+       }
+     | LPAREN exp RPAREN {
+       }
+     | fncall {
+       }
+
 
 
 type : INT { $$ = new IntNode(); }
