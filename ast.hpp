@@ -196,14 +196,15 @@ private:
 
 class FnBodyNode : public ASTNode {
 public:
-	FnBodyNode(std::list<DeclNode *> * varDeclList, StmtListNode * stmtList) : ASTNode() {
-		myDeclList = *varDeclList;
-		myStmtList = stmtList;
+	FnBodyNode(std::list<VarDeclNode *> * varDeclList, std::list<StmtNode *> * stmtList) : ASTNode() {
+		myDecls = *varDeclList;
+		myStmts = *stmtList;
 	}
 	void unparse(std::ostream& out, int indent);
 private:
-	std::list<DeclNode *> myDeclList;
-	StmtListNode * myStmtList;
+	std::list<VarDeclNode *> myDecls;
+	//StmtListNode * myStmts;
+	std::list<StmtNode *> myStmts;
 };
 
 class FnDeclNode : public DeclNode {
@@ -235,7 +236,7 @@ private:
 
 class StructDeclNode : public DeclNode {
 public:
-	StructDeclNode(IdNode * id, std::list<DeclNode *> * varDecls, int size) : DeclNode(){
+	StructDeclNode(IdNode * id, std::list<VarDeclNode *> * varDecls, int size) : DeclNode(){
 		myId = id;
 		mySize = size;
 		myDecls = *varDecls;
@@ -244,7 +245,7 @@ public:
 private:
 	IdNode * myId;
 	int mySize;
-	std::list<DeclNode *> myDecls;
+	std::list<VarDeclNode *> myDecls;
 };
 
 class StmtNode : public ASTNode {

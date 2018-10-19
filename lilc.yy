@@ -59,11 +59,15 @@
     LILC::IdNode * idNode;
     LILC::FnBodyNode * fnBodyNode;
     LILC::FnDeclNode * fnDeclNode;
-    LILC::StmtListNode * stmtListNode;
+    // Not sure if stmt lists can be lists or if they have to stmtlistnodes
+    //LILC::StmtListNode * stmtListNode;
+    std::list<StmtNode *> * stmtListNode;
     LILC::StructDeclNode * structDeclNode;
     LILC::FormalsListNode * formalsListNode;
-    std::list<DeclNode *> * varDeclList;
-    std::list<DeclNode *> * structBody;
+    LILC::StmtNode * stmtNode;
+    LILC::ExpNode * expNode;
+    std::list<VarDeclNode *> * varDeclList;
+    std::list<VarDeclNode *> * structBody;
     /*LILC::Token * token;*/
 }
 
@@ -131,6 +135,8 @@
 %type <varDeclList> varDeclList
 %type <structBody> structBody
 %type <structDeclNode> structDecl
+%type <expNode> exp
+%type <stmtNode> stmt
 
 
 /* NOTE: Make sure to add precedence and associativity
@@ -170,7 +176,7 @@ structBody : structBody varDecl {
   $$ = $1;
              }
         |    varDecl {
-  $$ = new std::list<DeclNode *>();
+  $$ = new std::list<VarDeclNode *>();
   $$->push_back($1);
              }
 
@@ -179,7 +185,7 @@ fnDecl : type id formals fnBody {
 }
 
 formals : LPAREN RPAREN {
-
+            $$ = nullptr;
         }
     | LPAREN formalsList RPAREN {
 
@@ -197,7 +203,7 @@ formalDecl : type id {
 }
 
 fnBody : LCURLY varDeclList stmtList RCURLY {
-
+    $$ = new FnBodyNode($2, $3);
 }
 
 varDeclList : varDeclList varDecl {
@@ -205,14 +211,15 @@ varDeclList : varDeclList varDecl {
           $$ = $1;
             }
         | /* epsilon */ {
-          $$ = new std::list<DeclNode *>();
+          $$ = new std::list<VarDeclNode *>();
         }
 
 stmtList : stmtList stmt {
-
+            $1->push_back($2);
+            $$ = $1;
         }
     | /* epsilon */ {
-
+            $$ = new std::list<StmtNode *>();
         }
 
 stmt : assignExp SEMICOLON {
