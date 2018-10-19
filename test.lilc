@@ -1,5 +1,6 @@
-int dog;
-int cat;
-bool pup;
 
-void cow;
+struct a { int a; };
+
+void hey() {
+	int a;
+}
