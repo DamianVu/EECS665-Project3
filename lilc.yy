@@ -140,15 +140,90 @@ declList : declList decl {
 			$$ = new std::list<DeclNode *>();
 			}
 	;
-
-decl : varDecl {
-		//Make sure to fill out this rule
-
-}
+// Bison adds '$$ = $1' for empty bracket definitions by default
+decl : varDecl {} | structDecl {} | fnDecl {}
 
 varDecl : type id SEMICOLON {
   $$ = new VarDeclNode($1, $2, VarDeclNode::NOT_STRUCT);
 }
+
+structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
+	
+}
+
+structBody : structBody varDecl {
+
+			 }
+		|	 varDecl {
+
+			 }
+
+fnDecl : type id formals fnBody {
+	
+}
+
+formals : LPAREN RPAREN {
+	
+		} 
+	| LPAREN formalsList RPAREN {
+
+		}
+
+formalsList : formalDecl {
+	
+		}
+	| formalDecl COMMA formalsList {
+
+		}
+
+formalDecl : type id {
+	
+}
+
+fnBody : LCURLY varDeclList stmtList RCURLY {
+	
+}
+
+varDeclList : varDeclList varDecl {
+	
+			}
+		| /* epsilon */ {
+
+		}
+
+stmtList : stmtList stmt {
+	
+		}
+	| /* epsilon */ {
+
+		}
+
+stmt : assignExp SEMICOLON {
+	
+	}
+
+assignExp : loc ASSIGN exp {
+	
+}
+
+loc : id {
+	
+	}
+| loc DOT id {
+	
+	}
+
+exp : assignExp {
+	
+	}
+| term {
+	
+	}
+
+term : loc {
+	
+}
+
 
 type : INT { $$ = new IntNode(); }
      | BOOL { $$ = new BoolNode(); }
