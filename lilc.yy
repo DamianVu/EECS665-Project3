@@ -263,10 +263,10 @@ exp : assignExp {
        }
     }
 
-expt : expt * expf {
+expt : expt TIMES expf {
     
         }
-    | expt / expf {
+    | expt DIVIDE expf {
 
         }
     | expf {
@@ -277,7 +277,7 @@ expf : term {
     
     } 
     | MINUS term {
-    
+
     }
 
 
