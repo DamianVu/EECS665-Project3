@@ -261,7 +261,6 @@ exp : assignExp {
        }
      | term GREATEREQ term {
        }
-    }
 
 expt : expt TIMES expf {
     
