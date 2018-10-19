@@ -198,7 +198,7 @@ stmtList : stmtList stmt {
 
         }
 
-stmt : assignExp SEMICOLON { 
+stmt : assignExp SEMICOLON {
            }
          | loc PLUSPLUS SEMICOLON {
            }
@@ -245,26 +245,26 @@ exp : assignExp {
      }
      | NOT exp {
        }
-     | exp AND exp {
+     | term AND term {
        }
-     | exp OR exp {
+     | term OR term {
        }
-     | exp EQUALS exp {
+     | term EQUALS term {
        }
-     | exp NOTEQUALS exp {
+     | term NOTEQUALS term {
        }
-     | exp LESS exp {
+     | term LESS term {
        }
-     | exp GREATER exp {
+     | term GREATER term {
        }
-     | exp LESSEQ exp {
+     | term LESSEQ term {
        }
-     | exp GREATEREQ exp {
+     | term GREATEREQ term {
        }
     }
 
 expt : expt * expf {
-    
+
         }
     | expt / expf {
 
@@ -274,10 +274,10 @@ expt : expt * expf {
     }
 
 expf : term {
-    
-    } 
+
+    }
     | MINUS term {
-    
+
     }
 
 
@@ -299,17 +299,17 @@ term : loc {
 
 
 fncall : id LPAREN RPAREN {
-    
+
         }
     | id LPAREN actualList RPAREN {
 
         }
 
 actualList : exp {
-    
+
         }
     | actualList COMMA exp {
-    
+
     }
 
 type : INT { $$ = new IntNode(); }
