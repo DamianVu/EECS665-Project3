@@ -22,6 +22,32 @@ void VarDeclNode::unparse(std::ostream& out, int indent){
 	out << "\n";
 }
 
+void FnDeclNode::unparse(std::ostream& out, int indent) {
+
+}
+
+void FormalsListNode::unparse(std::ostream& out, int indent) {
+
+}
+
+void FormalDeclNode::unparse(std::ostream& out, int indent) {
+	
+}
+
+void StmtListNode::unparse(std::ostream& out, int indent) {
+	
+}
+
+void FnBodyNode::unparse(std::ostream& out, int indent) {
+	
+}
+
+void StructDeclNode::unparse(std::ostream& out, int indent) {
+	
+}
+
+
+
 void IdNode::unparse(std::ostream& out, int indent){
 	out << myStrVal;
 }

@@ -58,8 +58,10 @@
     LILC::TypeNode * typeNode;
     LILC::IdNode * idNode;
     LILC::FnBodyNode * fnBodyNode;
+    LILC::FnDeclNode * fnDeclNode;
     LILC::StmtListNode * stmtListNode;
     LILC::StructDeclNode * structDeclNode;
+    LILC::FormalsListNode * formalsListNode;
     std::list<DeclNode *> * varDeclList;
     std::list<DeclNode *> * structBody;
     /*LILC::Token * token;*/
@@ -122,8 +124,10 @@
 %type <varDeclNode> varDecl
 %type <typeNode> type
 %type <idNode> id
+%type <fnDeclNode> fnDecl
+%type <formalsListNode> formals
 %type <fnBodyNode> fnBody
-%type <stmtListNode> stmtList;
+%type <stmtListNode> stmtList
 %type <varDeclList> varDeclList
 %type <structBody> structBody
 %type <structDeclNode> structDecl
@@ -158,7 +162,7 @@ varDecl : type id SEMICOLON {
 }
 
 structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
-  // $$ = new StructDeclNode($2, $4, 0);
+  $$ = new StructDeclNode($2, $4, 0);
 }
 
 structBody : structBody varDecl {
@@ -171,7 +175,7 @@ structBody : structBody varDecl {
              }
 
 fnDecl : type id formals fnBody {
-
+    $$ = new FnDeclNode($1, $2, $3, $4, 0);
 }
 
 formals : LPAREN RPAREN {

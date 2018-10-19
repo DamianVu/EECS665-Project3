@@ -108,6 +108,7 @@ class DeclNode;
 class TypeNode;
 class IdNode;
 class StructDeclNode;
+class StmtNode;
 
 class ASTNode{
 public:
@@ -183,12 +184,6 @@ private:
 	int mySize;
 };
 
-class StmtNode : public ASTNode {
-public:
-	StmtNode() : ASTNode(){}
-	virtual void unparse(std::ostream& out, int indent) = 0;
-};
-
 class StmtListNode : public ASTNode {
 public:
 	StmtListNode(std::list<StmtNode *> * list) : ASTNode() {
@@ -250,6 +245,12 @@ private:
 	IdNode * myId;
 	int mySize;
 	std::list<DeclNode *> myDecls;
+};
+
+class StmtNode : public ASTNode {
+public:
+	StmtNode() : ASTNode(){}
+	virtual void unparse(std::ostream& out, int indent) = 0;
 };
 
 class ExpNode : public ASTNode {
