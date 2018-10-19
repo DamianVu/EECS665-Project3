@@ -224,6 +224,19 @@ term : loc {
 	
 }
 
+fncall : id LPAREN RPAREN {
+	
+		}
+	| id LPAREN actualList RPAREN {
+
+		}
+
+actualList : exp {
+	
+		}
+	| actualList COMMA exp {
+	
+	}
 
 type : INT { $$ = new IntNode(); }
      | BOOL { $$ = new BoolNode(); }
