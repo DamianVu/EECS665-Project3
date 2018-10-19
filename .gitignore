@@ -1,6 +1,7 @@
 *.swp
 *.o
 *.output
+*.out
 location.hh
 position.hh
 stack.hh
