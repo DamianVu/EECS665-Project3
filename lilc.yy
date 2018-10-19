@@ -198,7 +198,7 @@ stmtList : stmtList stmt {
 
 		}
 
-    stmt : assignExp { SEMICOLON
+    stmt : assignExp SEMICOLON { 
            }
          | loc PLUSPLUS SEMICOLON {
            }
@@ -208,11 +208,11 @@ stmtList : stmtList stmt {
            }
          | OUTPUT WRITE exp SEMICOLON {
            }
-         | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
-           }
          | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY ELSE LCURLY varDeclList stmtList RCURLY {
            }
-         | WHILE LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
+         | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
+           }
+         |  WHILE LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
            }
          | RETURN exp SEMICOLON {
            }
