@@ -7,7 +7,7 @@ void ProgramNode::unparse(std::ostream& out, int indent){
 }
 
 void DeclListNode::unparse(std::ostream& out, int indent){
-	for (std::list<DeclNode *>::iterator it=myDecls.begin(); 
+	for (std::list<DeclNode *>::iterator it=myDecls.begin();
 		it != myDecls.end(); ++it){
 	    DeclNode * elt = *it;
 	    elt->unparse(out, indent);
@@ -28,6 +28,14 @@ void IdNode::unparse(std::ostream& out, int indent){
 
 void IntNode::unparse(std::ostream& out, int indent){
 	out << "int";
+}
+
+void BoolNode::unparse(std::ostream& out, int indent){
+	out << "bool";
+}
+
+void VoidNode::unparse(std::ostream& out, int indent){
+	out << "void";
 }
 
 } // End namespace LIL' C

@@ -1,6 +1,6 @@
 %skeleton "lalr1.cc"
 %require  "3.0"
-%debug 
+%debug
 %defines
 %define api.namespace {LILC}
 %define parser_class_name {LilC_Parser}
@@ -34,7 +34,7 @@
    #include <iostream>
    #include <cstdlib>
    #include <fstream>
-   
+
    /* include for interoperation between scanner/parser */
    #include "lilc_compiler.hpp"
 
@@ -109,7 +109,7 @@
 /* Nonterminals
 *  NOTE: You will need to add more nonterminals
 *  to this list as you add productions to the grammar
-*  below. 
+*  below.
 */
 %type <programNode> program
 %type <declList> declList
@@ -119,7 +119,7 @@
 %type <idNode> id
 
 
-/* NOTE: Make sure to add precedence and associativity 
+/* NOTE: Make sure to add precedence and associativity
  * declarations
 */
 
@@ -143,11 +143,17 @@ declList : declList decl {
 
 decl : varDecl {
 		//Make sure to fill out this rule
-		}
+
+}
+
 varDecl : type id SEMICOLON {
-		$$ = new VarDeclNode($1, $2, VarDeclNode::NOT_STRUCT);
-			    }
+  $$ = new VarDeclNode($1, $2, VarDeclNode::NOT_STRUCT);
+}
+
 type : INT { $$ = new IntNode(); }
+     | BOOL { $$ = new BoolNode(); }
+     | VOID { $$ = new VoidNode(); }
+
 id : ID { $$ = new IdNode($1); }
 %%
 void

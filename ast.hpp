@@ -5,10 +5,10 @@
 #include <list>
 #include "symbols.hpp"
 
-//Here is a suggestion for all the different kinds of AST nodes 
+//Here is a suggestion for all the different kinds of AST nodes
 // and what kinds
 // of children they have. All of these kinds of AST nodes are
-// subclasses of ASTNode. 
+// subclasses of ASTNode.
 // Indentation indicates further subclassing:
 //
 //     Subclass		Children
@@ -124,7 +124,7 @@ public:
 	void unparse(std::ostream& out, int indent);
 private:
 	DeclListNode * myDeclList;
-	
+
 };
 
 class DeclListNode : public ASTNode{
@@ -168,6 +168,7 @@ public:
 class IdNode : public TypeNode{
 public:
 	IdNode(IDToken * token) : TypeNode(){
+		myStrVal = token->value();
 	}
 	void unparse(std::ostream& out, int indent);
 private:
@@ -177,6 +178,20 @@ private:
 class IntNode : public TypeNode{
 public:
 	IntNode(): TypeNode(){
+	}
+	void unparse(std::ostream& out, int indent);
+};
+
+class BoolNode : public TypeNode{
+public:
+	BoolNode(): TypeNode(){
+	}
+	void unparse(std::ostream& out, int indent);
+};
+
+class VoidNode : public TypeNode{
+public:
+	VoidNode(): TypeNode(){
 	}
 	void unparse(std::ostream& out, int indent);
 };
