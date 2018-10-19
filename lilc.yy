@@ -44,20 +44,20 @@
 
 /*%define api.value.type variant*/
 %union {
-	/*
-	int intVal;
-	std::string * strVal;
-	*/
-	LILC::SynSymbol * symbolValue;
-	LILC::IDToken * idTokenValue;
-	LILC::ASTNode * astNode;
-	LILC::ProgramNode * programNode;
-	std::list<DeclNode *> * declList;
-	LILC::DeclNode * declNode;
-	LILC::VarDeclNode * varDeclNode;
-	LILC::TypeNode * typeNode;
-	LILC::IdNode * idNode;
-	/*LILC::Token * token;*/
+    /*
+    int intVal;
+    std::string * strVal;
+    */
+    LILC::SynSymbol * symbolValue;
+    LILC::IDToken * idTokenValue;
+    LILC::ASTNode * astNode;
+    LILC::ProgramNode * programNode;
+    std::list<DeclNode *> * declList;
+    LILC::DeclNode * declNode;
+    LILC::VarDeclNode * varDeclNode;
+    LILC::TypeNode * typeNode;
+    LILC::IdNode * idNode;
+    /*LILC::Token * token;*/
 }
 
 %define parse.assert
@@ -126,20 +126,20 @@
 %%
 
 program : declList {
-		   //$$ = new ProgramNode(new DeclListNode($1));
-		   $$ = new ProgramNode(new DeclListNode($1));
-		   compiler.setASTRoot($$);
-		   }
-  	;
+           //$$ = new ProgramNode(new DeclListNode($1));
+           $$ = new ProgramNode(new DeclListNode($1));
+           compiler.setASTRoot($$);
+           }
+    ;
 
 declList : declList decl {
-			 $1->push_back($2);
-			 $$ = $1;
-			 }
-	| /* epsilon */ {
-			$$ = new std::list<DeclNode *>();
-			}
-	;
+             $1->push_back($2);
+             $$ = $1;
+             }
+    | /* epsilon */ {
+            $$ = new std::list<DeclNode *>();
+            }
+    ;
 // Bison adds '$$ = $1' for empty bracket definitions by default
 decl : varDecl {} | structDecl {} | fnDecl {}
 
@@ -153,10 +153,10 @@ structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
 
 structBody : structBody varDecl {
 
-			 }
-		|	 varDecl {
+             }
+        |    varDecl {
 
-			 }
+             }
 
 fnDecl : type id formals fnBody {
 
@@ -164,17 +164,17 @@ fnDecl : type id formals fnBody {
 
 formals : LPAREN RPAREN {
 
-		}
-	| LPAREN formalsList RPAREN {
+        }
+    | LPAREN formalsList RPAREN {
 
-		}
+        }
 
 formalsList : formalDecl {
 
-		}
-	| formalDecl COMMA formalsList {
+        }
+    | formalDecl COMMA formalsList {
 
-		}
+        }
 
 formalDecl : type id {
 
@@ -186,19 +186,19 @@ fnBody : LCURLY varDeclList stmtList RCURLY {
 
 varDeclList : varDeclList varDecl {
 
-			}
-		| /* epsilon */ {
+            }
+        | /* epsilon */ {
 
-		}
+        }
 
 stmtList : stmtList stmt {
 
-		}
-	| /* epsilon */ {
+        }
+    | /* epsilon */ {
 
-		}
+        }
 
-    stmt : assignExp SEMICOLON { 
+stmt : assignExp SEMICOLON { 
            }
          | loc PLUSPLUS SEMICOLON {
            }
@@ -227,21 +227,22 @@ assignExp : loc ASSIGN exp {
 
 loc : id {
 
-	}
+    }
 | loc DOT id {
 
-	}
+    }
 
 exp : assignExp {
        }
-     | exp PLUS exp {
-       }
-     | exp MINUS exp {
-       }
-     | exp TIMES exp {
-       }
-     | exp DIVIDE exp {
-       }
+     | exp PLUS expt {
+
+     }
+     | exp MINUS expt {
+
+     }
+     | expt {
+
+     }
      | NOT exp {
        }
      | exp AND exp {
@@ -260,10 +261,26 @@ exp : assignExp {
        }
      | exp GREATEREQ exp {
        }
-     | MINUS term {
-       }
-     | term {
     }
+
+expt : expt * expf {
+    
+        }
+    | expt / expf {
+
+        }
+    | expf {
+
+    }
+
+expf : term {
+    
+    } 
+    | MINUS term {
+    
+    }
+
+
 
 term : loc {
        }
@@ -282,18 +299,18 @@ term : loc {
 
 
 fncall : id LPAREN RPAREN {
-	
-		}
-	| id LPAREN actualList RPAREN {
+    
+        }
+    | id LPAREN actualList RPAREN {
 
-		}
+        }
 
 actualList : exp {
-	
-		}
-	| actualList COMMA exp {
-	
-	}
+    
+        }
+    | actualList COMMA exp {
+    
+    }
 
 type : INT { $$ = new IntNode(); }
      | BOOL { $$ = new BoolNode(); }
