@@ -57,6 +57,8 @@
     LILC::VarDeclNode * varDeclNode;
     LILC::TypeNode * typeNode;
     LILC::IdNode * idNode;
+    LILC::FnBodyNode * fnBodyNode;
+    LILC::StmtListNode * stmtListNode;
     /*LILC::Token * token;*/
 }
 
@@ -117,6 +119,8 @@
 %type <varDeclNode> varDecl
 %type <typeNode> type
 %type <idNode> id
+%type <fnBodyNode> fnBody
+%type <stmtListNode> stmtList;
 
 
 /* NOTE: Make sure to add precedence and associativity
@@ -278,8 +282,6 @@ expf : term {
     | MINUS term {
 
     }
-
-
 
 term : loc {
        }

@@ -137,6 +137,16 @@ private:
 	std::list<DeclNode *> myDecls;
 };
 
+class FormalsListNode : public ASTNode {
+public:
+	FormalsListNode(std::list<DeclNode *> * decls) : ASTNode() {
+		myDecls = *decls;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	std::list<DeclNode *> myDecls;
+};
+
 class DeclNode : public ASTNode{
 public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
@@ -156,6 +166,73 @@ private:
 	TypeNode * myType;
 	IdNode * myId;
 	int mySize;
+};
+
+class FormalDeclNode : public DeclNode {
+public:
+	FormalDeclNode(TypeNode * type, IdNode * id, int size) : DeclNode() {
+		myType = type;
+		myId = id;
+		mySize = size;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	TypeNode * myType;
+	IdNode * myId;
+	int mySize;
+};
+
+class StmtNode : public ASTNode {
+public:
+	StmtNode() : ASTNode(){}
+	virtual void unparse(std::ostream& out, int indent) = 0;
+};
+
+class StmtListNode : public ASTNode {
+public:
+	StmtListNode(std::list<StmtNode *> * list) : ASTNode() {
+		myList = *list;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	std::list<StmtNode *> myList;
+};
+
+class FnBodyNode : public ASTNode {
+public:
+	FnBodyNode(std::list<DeclNode *> * varDeclList, StmtListNode * stmtList) : ASTNode() {
+		myDeclList = *varDeclList;
+		myStmtList = stmtList;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	std::list<DeclNode *> myDeclList;
+	StmtListNode * myStmtList;
+};
+
+class FnDeclNode : public DeclNode {
+public:
+	FnDeclNode(TypeNode * type, IdNode * id, FormalsListNode * formals, FnBodyNode * body, int size) : DeclNode() {
+		myType = type;
+		myId = id;
+		myFormals = formals;
+		myBody = body;
+		mySize = size;
+	}
+	void unparse(std::ostream& out, int indent);
+
+private:
+	TypeNode * myType;
+	IdNode * myId;
+	FormalsListNode * myFormals;
+	FnBodyNode * myBody;
+	int mySize;
+};
+
+class ExpNode : public ASTNode {
+public:
+	ExpNode() : ASTNode() {}
+	virtual void unparse(std::ostream& out, int indent) = 0;
 };
 
 class TypeNode : public ASTNode{
