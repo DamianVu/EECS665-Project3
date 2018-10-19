@@ -57,6 +57,9 @@
     LILC::VarDeclNode * varDeclNode;
     LILC::TypeNode * typeNode;
     LILC::IdNode * idNode;
+    LILC::StructDeclNode * structDeclNode;
+    std::list<DeclNode *> * varDeclList;
+    std::list<DeclNode *> * structBody;
     /*LILC::Token * token;*/
 }
 
@@ -117,6 +120,9 @@
 %type <varDeclNode> varDecl
 %type <typeNode> type
 %type <idNode> id
+%type <varDeclList> varDeclList
+%type <structBody> structBody
+%type <structDeclNode> structDecl
 
 
 /* NOTE: Make sure to add precedence and associativity
@@ -148,14 +154,16 @@ varDecl : type id SEMICOLON {
 }
 
 structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
-
+  // $$ = new StructDeclNode($2, $4, 0);
 }
 
 structBody : structBody varDecl {
-
+  $1->push_back($2);
+  $$ = $1;
              }
         |    varDecl {
-
+  $$ = new std::list<DeclNode *>();
+  $$->push_back($1);
              }
 
 fnDecl : type id formals fnBody {
@@ -185,10 +193,11 @@ fnBody : LCURLY varDeclList stmtList RCURLY {
 }
 
 varDeclList : varDeclList varDecl {
-
+          $1->push_back($2);
+          $$ = $1;
             }
         | /* epsilon */ {
-
+          $$ = new std::list<DeclNode *>();
         }
 
 stmtList : stmtList stmt {
@@ -263,7 +272,7 @@ exp : assignExp {
        }
 
 expt : expt TIMES expf {
-    
+
         }
     | expt DIVIDE expf {
 
