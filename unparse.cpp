@@ -111,6 +111,12 @@ void AssignStmtNode::unparse(std::ostream& out, int indent) {
 	myAssign->unparse(out, 0);
 }
 
+void PostIncStmtNode::unparse(std::ostream& out, int indent) {
+	doIndent(out, indent);
+	myLoc->unparse(out, 0);
+	out << "++;\n";
+}
+
 // End Statement Nodes
 
 // Begin Exp Nodes

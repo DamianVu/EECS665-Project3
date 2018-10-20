@@ -234,6 +234,7 @@ stmt : assignExp SEMICOLON {
             $$ = new AssignStmtNode($1);
         }
          | loc PLUSPLUS SEMICOLON {
+            $$ = new PostIncStmtNode($1);
            }
          | loc MINUSMINUS SEMICOLON {
            }

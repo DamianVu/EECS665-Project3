@@ -4,4 +4,6 @@ struct a { int a; };
 void hey(int a, int b) {
 	int a;
 	x.a.b = y.a;
+	x++;
+	y.a.b++;
 }

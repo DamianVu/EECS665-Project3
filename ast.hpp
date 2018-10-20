@@ -282,6 +282,16 @@ private:
 	AssignNode * myAssign;
 };
 
+class PostIncStmtNode : public StmtNode {
+public:
+	PostIncStmtNode(ExpNode * loc) : StmtNode() {
+		myLoc = loc;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLoc;
+};
+
 // End Stmt Nodes
 
 // Exp Nodes
