@@ -1,7 +1,7 @@
 *.swp
 *.o
 *.output
-*.out
+test.out
 location.hh
 position.hh
 stack.hh
