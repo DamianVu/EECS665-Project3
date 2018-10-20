@@ -6,4 +6,14 @@ void hey(int a, int b) {
 	x.a.b = y.a;
 	x++;
 	y.a.b++;
+	a--;
+	input >> a.y;
+	output << a.x;
+	return;
+	return a;
+}
+
+void test() {
+	functionCall();
+	functionCallWithList(a, b, c);
 }

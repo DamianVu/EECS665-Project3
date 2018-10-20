@@ -117,6 +117,42 @@ void PostIncStmtNode::unparse(std::ostream& out, int indent) {
 	out << "++;\n";
 }
 
+void PostDecStmtNode::unparse(std::ostream& out, int indent) {
+	doIndent(out, indent);
+	myLoc->unparse(out, 0);
+	out << "--;\n";
+}
+
+void ReadStmtNode::unparse(std::ostream& out, int indent) {
+	doIndent(out, indent);
+	out << "cin >> ";
+	myLoc->unparse(out, 0);
+	out << ";\n";
+}
+
+void WriteStmtNode::unparse(std::ostream& out, int indent) {
+	doIndent(out, indent);
+	out << "cout << ";
+	myLoc->unparse(out, 0);
+	out << ";\n";
+}
+
+void ReturnStmtNode::unparse(std::ostream& out, int indent) {
+	doIndent(out, indent);
+	out << "return";
+	if (myLoc != nullptr) {
+		out << " ";
+		myLoc->unparse(out, 0);
+	}
+	out << ";\n";
+}
+
+void CallStmtNode::unparse(std::ostream& out, int indent) {
+	doIndent(out, indent);
+	myCall->unparse(out, 0);
+	out << ";\n";
+}
+
 // End Statement Nodes
 
 // Begin Exp Nodes
@@ -133,6 +169,27 @@ void DotAccessNode::unparse(std::ostream& out, int indent) {
 	out << ".";
 	myRight->unparse(out, 0);
 }
+
+void CallExpNode::unparse(std::ostream& out, int indent) {
+	myLoc->unparse(out, 0);
+	out << "(";
+	if (myList != nullptr)
+		myList->unparse(out, 0);
+	out << ")";
+}
+
+void ExpListNode::unparse(std::ostream& out, int indent) {
+	for (std::list<ExpNode *>::iterator it=myList.begin();
+		it != myList.end(); ++it){
+	    ExpNode * elt = *it;
+	    elt->unparse(out, 0);
+	    if (elt != myList.back()) {
+	    	out << ", ";
+	    }
+	}
+}
+
+
 
 // End Exp Nodes
 

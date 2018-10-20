@@ -71,6 +71,8 @@
     LILC::AssignStmtNode * assignStmtNode;
     std::list<VarDeclNode *> * varDeclList;
     std::list<VarDeclNode *> * structBody;
+    LILC::ExpListNode * expListNode;
+    LILC::CallExpNode * callExpNode;
     /*LILC::Token * token;*/
 }
 
@@ -143,7 +145,8 @@
 %type <expNode> exp loc
 %type <assignNode> assignExp
 %type <stmtNode> stmt
-
+%type <callExpNode> fncall
+%type <expListNode> actualList
 
 /* NOTE: Make sure to add precedence and associativity
  * declarations
@@ -237,10 +240,13 @@ stmt : assignExp SEMICOLON {
             $$ = new PostIncStmtNode($1);
            }
          | loc MINUSMINUS SEMICOLON {
+            $$ = new PostDecStmtNode($1);
            }
          | INPUT READ loc SEMICOLON {
+            $$ = new ReadStmtNode($3);
            }
          | OUTPUT WRITE exp SEMICOLON {
+            $$ = new WriteStmtNode($3);
            }
          | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY ELSE LCURLY varDeclList stmtList RCURLY {
            }
@@ -249,10 +255,13 @@ stmt : assignExp SEMICOLON {
          |  WHILE LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
            }
          | RETURN exp SEMICOLON {
+            $$ = new ReturnStmtNode($2);
            }
          | RETURN SEMICOLON {
+            $$ = new ReturnStmtNode(nullptr);
            }
          | fncall SEMICOLON {
+            $$ = new CallStmtNode($1);
            }
 
 assignExp : loc ASSIGN exp {
@@ -328,19 +337,20 @@ term : loc {
      | fncall {
        }
 
-
 fncall : id LPAREN RPAREN {
-
+            $$ = new CallExpNode($1, nullptr);
         }
     | id LPAREN actualList RPAREN {
-
+            $$ = new CallExpNode($1, $3);
         }
 
 actualList : exp {
-
+            $$ = new ExpListNode(new std::list<ExpNode *>());
+            $$->add($1);
         }
     | actualList COMMA exp {
-
+        $1->add($3);
+        $$ = $1;
     }
 
 type : INT { $$ = new IntNode(); }

@@ -114,6 +114,8 @@ class ExpNode;
 class StmtNode;
 class AssignNode;
 class AssignStmtNode;
+class CallExpNode;
+class ExpListNode;
 
 class ASTNode{
 public:
@@ -292,6 +294,56 @@ private:
 	ExpNode * myLoc;
 };
 
+class PostDecStmtNode : public StmtNode {
+public:
+	PostDecStmtNode(ExpNode * loc) : StmtNode() {
+		myLoc = loc;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLoc;
+};
+
+class ReadStmtNode : public StmtNode {
+public:
+	ReadStmtNode(ExpNode * loc) : StmtNode() {
+		myLoc = loc;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLoc;
+};
+
+class WriteStmtNode : public StmtNode {
+public:
+	WriteStmtNode(ExpNode * loc) : StmtNode() {
+		myLoc = loc;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLoc;
+};
+
+class ReturnStmtNode : public StmtNode {
+public:
+	ReturnStmtNode(ExpNode * loc) : StmtNode() {
+		myLoc = loc;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLoc;
+};
+
+class CallStmtNode : public StmtNode {
+public:
+	CallStmtNode(CallExpNode * call) : StmtNode() {
+		myCall = call;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	CallExpNode * myCall;
+};
+
 // End Stmt Nodes
 
 // Exp Nodes
@@ -318,6 +370,31 @@ public:
 private:
 	ExpNode * myLeft;
 	IdNode * myRight;
+};
+
+class CallExpNode : public ExpNode {
+public:
+	CallExpNode(IdNode * loc, ExpListNode * list) : ExpNode() {
+		myLoc = loc;
+		myList = list;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	IdNode * myLoc;
+	ExpListNode * myList;
+};
+
+class ExpListNode : public ExpNode {
+public:
+	ExpListNode(std::list<ExpNode *> * list) : ExpNode() {
+		myList = *list;
+	}
+	void unparse(std::ostream& out, int indent);
+	void add(ExpNode * exp) {
+		myList.push_back(exp);
+	}
+private:
+	std::list<ExpNode *> myList;
 };
 
 // End Exp Nodes
