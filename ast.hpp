@@ -112,6 +112,8 @@ class StmtNode;
 class FormalDeclNode;
 class ExpNode;
 class StmtNode;
+class AssignNode;
+class AssignStmtNode;
 
 class ASTNode{
 public:
@@ -119,6 +121,18 @@ public:
 	void doIndent(std::ostream& out, int indent){
 		for (int k = 0 ; k < indent; k++){ out << " "; }
 	}
+};
+
+class StmtNode : public ASTNode {
+public:
+	StmtNode() : ASTNode(){}
+	virtual void unparse(std::ostream& out, int indent) = 0;
+};
+
+class ExpNode : public ASTNode {
+public:
+	ExpNode() : ASTNode() {}
+	virtual void unparse(std::ostream& out, int indent) = 0;
 };
 
 class ProgramNode : public ASTNode{
@@ -256,18 +270,49 @@ private:
 	int mySize;
 	std::list<VarDeclNode *> myDecls;
 };
+// Stmt Nodes
 
-class StmtNode : public ASTNode {
+class AssignStmtNode : public StmtNode {
 public:
-	StmtNode() : ASTNode(){}
-	virtual void unparse(std::ostream& out, int indent) = 0;
+	AssignStmtNode(AssignNode * assign) : StmtNode() {
+		myAssign = assign;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	AssignNode * myAssign;
 };
 
-class ExpNode : public ASTNode {
+// End Stmt Nodes
+
+// Exp Nodes
+
+class AssignNode : public ExpNode {
 public:
-	ExpNode() : ASTNode() {}
-	virtual void unparse(std::ostream& out, int indent) = 0;
+	AssignNode(ExpNode * left, ExpNode * right) : ExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
 };
+
+class DotAccessNode : public ExpNode {
+public:
+	DotAccessNode(ExpNode * left, IdNode * right) : ExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	IdNode * myRight;
+};
+
+// End Exp Nodes
+
+
 
 class TypeNode : public ASTNode{
 public:
@@ -276,9 +321,9 @@ public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
 };
 
-class IdNode : public TypeNode{
+class IdNode : public ExpNode{
 public:
-	IdNode(IDToken * token) : TypeNode(){
+	IdNode(IDToken * token) : ExpNode(){
 		myStrVal = token->value();
 	}
 	void unparse(std::ostream& out, int indent);

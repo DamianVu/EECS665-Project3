@@ -67,6 +67,8 @@
     LILC::FormalDeclNode * formalDeclNode;
     LILC::StmtNode * stmtNode;
     LILC::ExpNode * expNode;
+    LILC::AssignNode * assignNode;
+    LILC::AssignStmtNode * assignStmtNode;
     std::list<VarDeclNode *> * varDeclList;
     std::list<VarDeclNode *> * structBody;
     /*LILC::Token * token;*/
@@ -138,7 +140,8 @@
 %type <varDeclList> varDeclList
 %type <structBody> structBody
 %type <structDeclNode> structDecl
-%type <expNode> exp
+%type <expNode> exp loc
+%type <assignNode> assignExp
 %type <stmtNode> stmt
 
 
@@ -228,7 +231,8 @@ stmtList : stmtList stmt {
         }
 
 stmt : assignExp SEMICOLON {
-           }
+            $$ = new AssignStmtNode($1);
+        }
          | loc PLUSPLUS SEMICOLON {
            }
          | loc MINUSMINUS SEMICOLON {
@@ -251,14 +255,14 @@ stmt : assignExp SEMICOLON {
            }
 
 assignExp : loc ASSIGN exp {
-
+    $$ = new AssignNode($1, $3);
 }
 
 loc : id {
-
+        
     }
 | loc DOT id {
-
+        $$ = new DotAccessNode($1, $3);
     }
 
 exp : assignExp {

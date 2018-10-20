@@ -70,7 +70,7 @@ void FormalDeclNode::unparse(std::ostream& out, int indent) {
 }
 
 void StmtListNode::unparse(std::ostream& out, int indent) {
-	
+	out << "AHHHH";
 }
 
 void StructDeclNode::unparse(std::ostream& out, int indent) {
@@ -103,5 +103,31 @@ void BoolNode::unparse(std::ostream& out, int indent){
 void VoidNode::unparse(std::ostream& out, int indent){
 	out << "void";
 }
+
+// Begin Statement Nodes
+
+void AssignStmtNode::unparse(std::ostream& out, int indent) {
+	doIndent(out, indent);
+	myAssign->unparse(out, 0);
+}
+
+// End Statement Nodes
+
+// Begin Exp Nodes
+
+void AssignNode::unparse(std::ostream& out, int indent) {
+	myLeft->unparse(out, 0);
+	out << " = ";
+	myRight->unparse(out, 0);
+	out << ";\n";
+}
+
+void DotAccessNode::unparse(std::ostream& out, int indent) {
+	myLeft->unparse(out, 0);
+	out << ".";
+	myRight->unparse(out, 0);
+}
+
+// End Exp Nodes
 
 } // End namespace LIL' C
