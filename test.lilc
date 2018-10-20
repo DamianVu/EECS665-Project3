@@ -16,4 +16,25 @@ void hey(int a, int b) {
 void test() {
 	functionCall();
 	functionCallWithList(a, b, c);
+	while (a) {
+		x.y = x.b;
+		a.c = y.f;
+	}
+	a = b + y;
+	b = y * z;
+	x = y + f * z - a;
+	a = !b;
+}
+
+void btest() {
+	a = b && a;
+	c = a || y;
+}
+
+void ctest() {
+	a.b.c = 5;
+	a = "hello";
+	a = true;
+	b = false;
+	a = (true || false);
 }

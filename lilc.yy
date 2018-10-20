@@ -74,6 +74,8 @@
     LILC::IfStmtNode * ifStmtNode;
     LILC::IfElseStmtNode * ifElseStmtNode;
     /*LILC::Token * token;*/
+    int intLit;
+    std::string * stringLit;
 }
 
 %define parse.assert
@@ -94,8 +96,8 @@
 %token               WHILE
 %token               RETURN
 %token <idTokenValue> ID
-%token               INTLITERAL
-%token               STRINGLITERAL
+%token <intLit>      INTLITERAL
+%token <stringLit>   STRINGLITERAL
 %token               LCURLY
 %token               RCURLY
 %token               LPAREN
@@ -141,7 +143,7 @@
 %type <stmtListNode> stmtList
 %type <varDeclList> varDeclList structBody
 %type <structDeclNode> structDecl
-%type <expNode> exp loc
+%type <expNode> exp loc expt expf term
 %type <assignNode> assignExp
 %type <stmtNode> stmt
 %type <callExpNode> fncall
@@ -254,7 +256,7 @@ stmt : assignExp SEMICOLON {
             $$ = new IfStmtNode($3, $6, $7);
            }
          |  WHILE LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
-
+            $$ = new WhileStmtNode($3, $6, $7);
            }
          | RETURN exp SEMICOLON {
             $$ = new ReturnStmtNode($2);
@@ -274,67 +276,74 @@ loc : id {} | loc DOT id {
         $$ = new DotAccessNode($1, $3);
     }
 
-exp : assignExp {
-       }
+exp : assignExp {}
      | exp PLUS expt {
-
+        $$ = new PlusNode($1, $3);
      }
      | exp MINUS expt {
-
+        $$ = new MinusNode($1, $3);
      }
-     | expt {
-
-     }
+     | expt {}
      | NOT exp {
+        $$ = new NotNode($2);
        }
      | term AND term {
+        $$ = new AndNode($1, $3);
        }
      | term OR term {
+        $$ = new OrNode($1, $3);
        }
      | term EQUALS term {
+        $$ = new EqualsNode($1, $3);
        }
      | term NOTEQUALS term {
+        $$ = new NotEqualsNode($1, $3);
        }
      | term LESS term {
+        $$ = new LessNode($1, $3);
        }
      | term GREATER term {
+        $$ = new GreaterNode($1, $3);
        }
      | term LESSEQ term {
+        $$ = new LessEqNode($1, $3);
        }
      | term GREATEREQ term {
+        $$ = new GreaterEqNode($1, $3);
        }
 
 expt : expt TIMES expf {
-
+            $$ = new TimesNode($1, $3);
         }
     | expt DIVIDE expf {
-
+            $$ =  new DivideNode($1, $3);
         }
-    | expf {
+    | expf {}
 
-    }
-
-expf : term {
-
-    }
+expf : term {}
     | MINUS term {
-
+        $$ = new UnaryMinusNode($2);
     }
 
 term : loc {
        }
      | INTLITERAL {
+        int a = $1;
+        $$ = new IntLitNode(a);
        }
      | STRINGLITERAL {
+        $$ = new StringLitNode($1);
        }
      | TRUE {
+        $$ = new TrueNode();
        }
      | FALSE {
+        $$ = new FalseNode();
        }
      | LPAREN exp RPAREN {
+        $$ = $2;
        }
-     | fncall {
-       }
+     | fncall {}
 
 fncall : id LPAREN RPAREN {
             $$ = new CallExpNode($1, nullptr);

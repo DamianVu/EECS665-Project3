@@ -138,6 +138,18 @@ public:
 	virtual void unparse(std::ostream& out, int indent) = 0;
 };
 
+class UnaryExpNode : public ExpNode {
+public:
+	UnaryExpNode() : ExpNode() {}
+	virtual void unparse(std::ostream& out, int indent) = 0;
+};
+
+class BinaryExpNode : public ExpNode {
+public:
+	BinaryExpNode() : ExpNode() {}
+	virtual void unparse(std::ostream& out, int indent) = 0;
+};
+
 class ProgramNode : public ASTNode{
 public:
 	ProgramNode(DeclListNode * L) : ASTNode(){
@@ -382,6 +394,20 @@ private:
 	StmtListNode * myElseStmtList;
 };
 
+class WhileStmtNode : public StmtNode {
+public:
+	WhileStmtNode(ExpNode * exp, VarDeclListNode * varList, StmtListNode * stmtList) : StmtNode() {
+		myExp = exp;
+		myVarList = varList;
+		myStmtList = stmtList;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myExp;
+	VarDeclListNode * myVarList;
+	StmtListNode * myStmtList;
+};
+
 // End Stmt Nodes
 
 // Exp Nodes
@@ -435,8 +461,225 @@ private:
 	std::list<ExpNode *> myList;
 };
 
-// End Exp Nodes
+class PlusNode : public BinaryExpNode {
+public:
+	PlusNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
 
+class MinusNode : public BinaryExpNode {
+public:
+	MinusNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class TimesNode : public BinaryExpNode {
+public:
+	TimesNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class DivideNode : public BinaryExpNode {
+public:
+	DivideNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class UnaryMinusNode : public UnaryExpNode {
+public:
+	UnaryMinusNode(ExpNode * node) : UnaryExpNode() {
+		myNode = node;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myNode;
+};
+
+class NotNode : public UnaryExpNode {
+public:
+	NotNode(ExpNode * node) : UnaryExpNode() {
+		myNode = node;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myNode;
+};
+
+class AndNode : public BinaryExpNode {
+public:
+	AndNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class OrNode : public BinaryExpNode {
+public:
+	OrNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class EqualsNode : public BinaryExpNode {
+public:
+	EqualsNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class NotEqualsNode : public BinaryExpNode {
+public:
+	NotEqualsNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class LessNode : public BinaryExpNode {
+public:
+	LessNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class GreaterNode : public BinaryExpNode {
+public:
+	GreaterNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class LessEqNode : public BinaryExpNode {
+public:
+	LessEqNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class GreaterEqNode : public BinaryExpNode {
+public:
+	GreaterEqNode(ExpNode * left, ExpNode * right) : BinaryExpNode() {
+		myLeft = left;
+		myRight = right;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	ExpNode * myLeft;
+	ExpNode * myRight;
+};
+
+class TrueNode : public ExpNode {
+public:
+	TrueNode() : ExpNode() {}
+	void unparse(std::ostream& out, int indent);
+};
+
+class FalseNode : public ExpNode {
+public:
+	FalseNode() : ExpNode() {}
+	void unparse(std::ostream& out, int indent);
+};
+
+
+
+// LANE! Please finish these. I don't know how the memory works for getting the values in lilc.yy
+
+class IntLitNode : public ExpNode {
+public:
+	IntLitNode(int val) : ExpNode() {
+		myVal = val;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	int myVal;
+};
+
+class StringLitNode : public ExpNode {
+public:
+	StringLitNode(std::string * val) : ExpNode() {
+		myVal = val;
+	}
+	void unparse(std::ostream& out, int indent);
+private:
+	std::string * myVal;
+};
+
+//       IntLitNode          -- none --
+//       StrLitNode          -- none --
+//       TrueNode            -- none --
+//       FalseNode           -- none --
+//       IdNode              -- none --
+// End Exp Nodes
+//       BinaryExpNode       ExpNode ExpNode
+//         PlusNode
+//         MinusNode
+//         TimesNode
+//         DivideNode
+//         AndNode
+//         OrNode
+//         EqualsNode
+//         NotEqualsNode
+//         LessNode
+//         GreaterNode
+//         LessEqNode
+//         GreaterEqNode
 
 
 class TypeNode : public ASTNode{

@@ -153,11 +153,40 @@ void CallStmtNode::unparse(std::ostream& out, int indent) {
 }
 
 void IfStmtNode::unparse(std::ostream& out, int indent) {
-	out << "IF STATEMENT\n";
+	doIndent(out, indent);
+	out << "if (";
+	myExp->unparse(out, 0);
+	out << ") {\n";
+	myVarList->unparse(out, indent+1);
+	myStmtList->unparse(out, indent+1);
+	doIndent(out, indent);
+	out << "}\n";
 }
 
 void IfElseStmtNode::unparse(std::ostream& out, int indent) {
-	out << "IF ELSE STATEMENT\n";
+	doIndent(out, indent);
+	out << "if (";
+	myExp->unparse(out, 0);
+	out << ") {\n";
+	myVarList->unparse(out, indent+1);
+	myStmtList->unparse(out, indent+1);
+	doIndent(out, indent);
+	out << "} else {\n";
+	myElseVarList->unparse(out, indent+1);
+	myElseStmtList->unparse(out, indent+1);
+	doIndent(out, indent);
+	out << "}\n";
+}
+
+void WhileStmtNode::unparse(std::ostream& out, int indent) {
+	doIndent(out, indent);
+	out << "while (";
+	myExp->unparse(out, 0);
+	out << ") {\n";
+	myVarList->unparse(out, indent+1);
+	myStmtList->unparse(out, indent+1);
+	doIndent(out, indent);
+	out << "}\n";
 }
 
 // End Statement Nodes
@@ -196,6 +225,129 @@ void ExpListNode::unparse(std::ostream& out, int indent) {
 	}
 }
 
+void PlusNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " + ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void MinusNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " - ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void TimesNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " * ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void DivideNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " / ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void UnaryMinusNode::unparse(std::ostream& out, int indent) {
+	out << "(-";
+	myNode->unparse(out, 0);
+	out << ")";
+}
+
+void NotNode::unparse(std::ostream& out, int indent) {
+	out << "(!";
+	myNode->unparse(out, 0);
+	out << ")";
+}
+
+void AndNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " && ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void OrNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " || ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void EqualsNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " == ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void NotEqualsNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " != ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void LessNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " < ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void GreaterNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " > ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void LessEqNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " <= ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void GreaterEqNode::unparse(std::ostream& out, int indent) {
+	out << "(";
+	myLeft->unparse(out, 0);
+	out << " >= ";
+	myRight->unparse(out, 0);
+	out << ")";
+}
+
+void TrueNode::unparse(std::ostream& out, int indent) {
+	out << "true";
+}
+
+void FalseNode::unparse(std::ostream& out, int indent) {
+	out << "false";
+}
+
+void IntLitNode::unparse(std::ostream& out, int indent) {
+	out << myVal;
+}
+
+void StringLitNode::unparse(std::ostream& out, int indent) {
+	out << myVal;
+}
 
 
 // End Exp Nodes
