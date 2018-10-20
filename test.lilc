@@ -1,6 +1,6 @@
 
 struct a { int a; };
 
-void hey() {
+void hey(int a, int b) {
 	int a;
 }

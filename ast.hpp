@@ -109,6 +109,9 @@ class TypeNode;
 class IdNode;
 class StructDeclNode;
 class StmtNode;
+class FormalDeclNode;
+class ExpNode;
+class StmtNode;
 
 class ASTNode{
 public:
@@ -141,12 +144,18 @@ private:
 
 class FormalsListNode : public ASTNode {
 public:
-	FormalsListNode(std::list<DeclNode *> * decls) : ASTNode() {
-		myDecls = *decls;
+	FormalsListNode(std::list<FormalDeclNode *> * decls) : ASTNode() {
+		myFormals = *decls;
+		count = 0;
 	}
 	void unparse(std::ostream& out, int indent);
+	void add(FormalDeclNode * formal) {
+		myFormals.push_back(formal);
+		count++;
+	}
 private:
-	std::list<DeclNode *> myDecls;
+	std::list<FormalDeclNode *> myFormals;
+	int count;
 };
 
 class DeclNode : public ASTNode{
@@ -258,9 +267,6 @@ class ExpNode : public ASTNode {
 public:
 	ExpNode() : ASTNode() {}
 	virtual void unparse(std::ostream& out, int indent) = 0;
-		IdNode * myId;
-		int mySize;
-		std::list<DeclNode *> myDecls;
 };
 
 class TypeNode : public ASTNode{

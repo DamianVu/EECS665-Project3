@@ -64,6 +64,7 @@
     std::list<StmtNode *> * stmtListNode;
     LILC::StructDeclNode * structDeclNode;
     LILC::FormalsListNode * formalsListNode;
+    LILC::FormalDeclNode * formalDeclNode;
     LILC::StmtNode * stmtNode;
     LILC::ExpNode * expNode;
     std::list<VarDeclNode *> * varDeclList;
@@ -130,6 +131,8 @@
 %type <idNode> id
 %type <fnDeclNode> fnDecl
 %type <formalsListNode> formals
+%type <formalsListNode> formalsList
+%type <formalDeclNode> formalDecl
 %type <fnBodyNode> fnBody
 %type <stmtListNode> stmtList
 %type <varDeclList> varDeclList
@@ -188,18 +191,20 @@ formals : LPAREN RPAREN {
             $$ = nullptr;
         }
     | LPAREN formalsList RPAREN {
-
+            $$ = $2;
         }
 
 formalsList : formalDecl {
-
+            $$ = new FormalsListNode(new std::list<FormalDeclNode *>());
+            $$->add($1);
         }
-    | formalDecl COMMA formalsList {
-
+    | formalsList COMMA formalDecl {
+            $1->add($3);
+            $$ = $1;
         }
 
 formalDecl : type id {
-
+            $$ = new FormalDeclNode($1, $2, 0);
 }
 
 fnBody : LCURLY varDeclList stmtList RCURLY {
