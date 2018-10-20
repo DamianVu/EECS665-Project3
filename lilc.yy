@@ -60,8 +60,7 @@
     LILC::FnBodyNode * fnBodyNode;
     LILC::FnDeclNode * fnDeclNode;
     // Not sure if stmt lists can be lists or if they have to stmtlistnodes
-    //LILC::StmtListNode * stmtListNode;
-    std::list<StmtNode *> * stmtListNode;
+    LILC::StmtListNode * stmtListNode;
     LILC::StructDeclNode * structDeclNode;
     LILC::FormalsListNode * formalsListNode;
     LILC::FormalDeclNode * formalDeclNode;
@@ -69,10 +68,11 @@
     LILC::ExpNode * expNode;
     LILC::AssignNode * assignNode;
     LILC::AssignStmtNode * assignStmtNode;
-    std::list<VarDeclNode *> * varDeclList;
-    std::list<VarDeclNode *> * structBody;
+    LILC::VarDeclListNode * varDeclList;
     LILC::ExpListNode * expListNode;
     LILC::CallExpNode * callExpNode;
+    LILC::IfStmtNode * ifStmtNode;
+    LILC::IfElseStmtNode * ifElseStmtNode;
     /*LILC::Token * token;*/
 }
 
@@ -139,8 +139,7 @@
 %type <formalDeclNode> formalDecl
 %type <fnBodyNode> fnBody
 %type <stmtListNode> stmtList
-%type <varDeclList> varDeclList
-%type <structBody> structBody
+%type <varDeclList> varDeclList structBody
 %type <structDeclNode> structDecl
 %type <expNode> exp loc
 %type <assignNode> assignExp
@@ -181,12 +180,12 @@ structDecl : STRUCT id LCURLY structBody RCURLY SEMICOLON {
 }
 
 structBody : structBody varDecl {
-  $1->push_back($2);
+  $1->add($2);
   $$ = $1;
              }
         |    varDecl {
-  $$ = new std::list<VarDeclNode *>();
-  $$->push_back($1);
+            $$ = new VarDeclListNode(new std::list<VarDeclNode *>());
+            $$->add($1);
              }
 
 fnDecl : type id formals fnBody {
@@ -218,19 +217,19 @@ fnBody : LCURLY varDeclList stmtList RCURLY {
 }
 
 varDeclList : varDeclList varDecl {
-          $1->push_back($2);
+          $1->add($2);
           $$ = $1;
             }
         | /* epsilon */ {
-          $$ = new std::list<VarDeclNode *>();
+          $$ = new VarDeclListNode(new std::list<VarDeclNode *>());
         }
 
 stmtList : stmtList stmt {
-            $1->push_back($2);
+            $1->add($2);
             $$ = $1;
         }
     | /* epsilon */ {
-            $$ = new std::list<StmtNode *>();
+            $$ = new StmtListNode(new std::list<StmtNode *>());
         }
 
 stmt : assignExp SEMICOLON {
@@ -249,10 +248,13 @@ stmt : assignExp SEMICOLON {
             $$ = new WriteStmtNode($3);
            }
          | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY ELSE LCURLY varDeclList stmtList RCURLY {
+            $$ = new IfElseStmtNode($3, $6, $7, $11, $12);
            }
          | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
+            $$ = new IfStmtNode($3, $6, $7);
            }
          |  WHILE LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY {
+
            }
          | RETURN exp SEMICOLON {
             $$ = new ReturnStmtNode($2);
@@ -268,10 +270,7 @@ assignExp : loc ASSIGN exp {
     $$ = new AssignNode($1, $3);
 }
 
-loc : id {
-        
-    }
-| loc DOT id {
+loc : id {} | loc DOT id {
         $$ = new DotAccessNode($1, $3);
     }
 
