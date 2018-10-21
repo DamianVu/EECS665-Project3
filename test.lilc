@@ -1,5 +1,5 @@
 
-struct a { int a; };
+struct a { int a; int b; int c; };
 
 void hey(int a, int b) {
 	int a;
@@ -24,6 +24,7 @@ void test() {
 	b = y * z;
 	x = y + f * z - a;
 	a = !b;
+	a = -b;
 }
 
 void btest() {
@@ -37,4 +38,5 @@ void ctest() {
 	a = true;
 	b = false;
 	a = (true || false);
+	a = c - -b;
 }

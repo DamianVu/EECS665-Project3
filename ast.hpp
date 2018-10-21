@@ -643,8 +643,8 @@ public:
 
 class IntLitNode : public ExpNode {
 public:
-	IntLitNode(int val) : ExpNode() {
-		myVal = val;
+	IntLitNode(IntLitToken * token) : ExpNode() {
+		myVal = token->value();
 	}
 	void unparse(std::ostream& out, int indent);
 private:
@@ -653,33 +653,13 @@ private:
 
 class StringLitNode : public ExpNode {
 public:
-	StringLitNode(std::string * val) : ExpNode() {
-		myVal = val;
+	StringLitNode(StringLitToken * token) : ExpNode() {
+		myVal = token->value();
 	}
 	void unparse(std::ostream& out, int indent);
 private:
-	std::string * myVal;
+	std::string myVal;
 };
-
-//       IntLitNode          -- none --
-//       StrLitNode          -- none --
-//       TrueNode            -- none --
-//       FalseNode           -- none --
-//       IdNode              -- none --
-// End Exp Nodes
-//       BinaryExpNode       ExpNode ExpNode
-//         PlusNode
-//         MinusNode
-//         TimesNode
-//         DivideNode
-//         AndNode
-//         OrNode
-//         EqualsNode
-//         NotEqualsNode
-//         LessNode
-//         GreaterNode
-//         LessEqNode
-//         GreaterEqNode
 
 
 class TypeNode : public ASTNode{

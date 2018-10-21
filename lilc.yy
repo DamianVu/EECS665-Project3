@@ -41,6 +41,7 @@
 #undef yylex
 #define yylex scanner.yylex
 }
+%expect 4
 
 /*%define api.value.type variant*/
 %union {
@@ -59,7 +60,6 @@
     LILC::IdNode * idNode;
     LILC::FnBodyNode * fnBodyNode;
     LILC::FnDeclNode * fnDeclNode;
-    // Not sure if stmt lists can be lists or if they have to stmtlistnodes
     LILC::StmtListNode * stmtListNode;
     LILC::StructDeclNode * structDeclNode;
     LILC::FormalsListNode * formalsListNode;
@@ -74,8 +74,8 @@
     LILC::IfStmtNode * ifStmtNode;
     LILC::IfElseStmtNode * ifElseStmtNode;
     /*LILC::Token * token;*/
-    int intLit;
-    std::string * stringLit;
+    LILC::IntLitToken * intLit;
+    LILC::StringLitToken * stringLit;
 }
 
 %define parse.assert
@@ -328,8 +328,7 @@ expf : term {}
 term : loc {
        }
      | INTLITERAL {
-        int a = $1;
-        $$ = new IntLitNode(a);
+        $$ = new IntLitNode($1);
        }
      | STRINGLITERAL {
         $$ = new StringLitNode($1);
